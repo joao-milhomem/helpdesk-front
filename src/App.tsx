@@ -1,13 +1,13 @@
-import "./index.css";
+import './index.css'
 
-import { BrowserRouter } from "react-router";
+import { BrowserRouter } from 'react-router'
 
-import { AppRoutes } from "./routes/app-routes";
+import { AuthRoutes } from './routes/auth-routes'
 
 export function App() {
 	return (
 		<BrowserRouter>
-			<AppRoutes />
+			<AuthRoutes />
 		</BrowserRouter>
-	);
+	)
 }

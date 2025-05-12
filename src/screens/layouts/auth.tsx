@@ -1,13 +1,15 @@
-import { Outlet } from "react-router";
+import { Outlet } from 'react-router'
 
 export function AuthLayout() {
 	return (
-		<div>
-			<div>Branding</div>
+		<div className="flex min-h-screen ">
+			<div className="grid flex-1 place-content-center bg-secondary">
+				<p>Login</p>
+			</div>
 
-			<div>
+			<div className="grid flex-1 place-content-center">
 				<Outlet />
 			</div>
 		</div>
-	);
+	)
 }

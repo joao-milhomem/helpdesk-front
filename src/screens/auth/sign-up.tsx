@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -14,22 +14,26 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { LogIn } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
 import { NavLink } from 'react-router'
 
-const signInformSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(4).max(20),
+const signUpFormSchema = z.object({
+	name: z.string().min(2, 'O nome deve ter pelo menos 2 caracteres'),
+	email: z.string().email('Digite um email válido'),
+	password: z
+		.string()
+		.min(4, 'A senha deve ter pelo menos 4 caracteres')
+		.max(20, 'A senha deve ter no máximo 20 caracteres'),
 })
 
-type SignInFormValues = z.infer<typeof signInformSchema>
+type SignUpFormValues = z.infer<typeof signUpFormSchema>
 
-export function SignIn() {
-	const form = useForm<SignInFormValues>({
-		resolver: zodResolver(signInformSchema),
+export function SignUp() {
+	const form = useForm<SignUpFormValues>({
+		resolver: zodResolver(signUpFormSchema),
 	})
 
-	async function handleSignIn(data: SignInFormValues) {
+	async function handleSignUp(data: SignUpFormValues) {
 		await new Promise((resolve) => setTimeout(resolve, 2000))
 		console.log(data)
 	}
@@ -37,15 +41,32 @@ export function SignIn() {
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(handleSignIn)}
+				onSubmit={form.handleSubmit(handleSignUp)}
 				className="min-w-[380px] space-y-8 rounded-lg border p-8 shadow-xl "
 			>
 				<fieldset>
 					<div className="mb-8">
 						<legend className="flex items-center gap-2 text-xl">
-							<span>Faça login</span>
-							<LogIn />
+							<span>Crie sua conta</span>
+							<UserPlus />
 						</legend>
+					</div>
+
+					{/* Name item */}
+					<div className="mb-6">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Nome</FormLabel>
+									<FormControl>
+										<Input placeholder="Digite seu nome" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 					</div>
 
 					{/* Email item */}
@@ -57,9 +78,8 @@ export function SignIn() {
 								<FormItem>
 									<FormLabel>Email</FormLabel>
 									<FormControl>
-										<Input placeholder="DIgite seu email" {...field} />
+										<Input placeholder="Digite seu email" {...field} />
 									</FormControl>
-
 									<FormMessage />
 								</FormItem>
 							)}
@@ -77,11 +97,10 @@ export function SignIn() {
 									<FormControl>
 										<Input
 											type="password"
-											placeholder="DIgite sua senha"
+											placeholder="Digite sua senha"
 											{...field}
 										/>
 									</FormControl>
-
 									<FormMessage />
 								</FormItem>
 							)}
@@ -94,13 +113,13 @@ export function SignIn() {
 					disabled={form.formState.isSubmitting}
 					className="w-full cursor-pointer font-semibold"
 				>
-					Entrar
+					Registrar
 				</Button>
 
 				<p className="text-center text-xs">
-					Não possui uma conta?
+					Já possui uma conta?
 					<Button asChild variant={'link'} className="mx-2 p-0 text-xs">
-						<NavLink to="/sign-up">Registre-se</NavLink>
+						<NavLink to="/">Faça login</NavLink>
 					</Button>
 				</p>
 			</form>
